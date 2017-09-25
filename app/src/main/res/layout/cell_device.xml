@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:id="@+id/cell_device_linear"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="8dp">
 
     <ImageView
-        android:id="@+id/device_image"
+        android:id="@+id/cell_device_image"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical"
+        android:transitionName="device_image"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -18,20 +21,21 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/device_name"
+            android:id="@+id/cell_device_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:transitionName="device_name"/>
 
         <TextView
-            android:id="@+id/device_address"
+            android:id="@+id/cell_device_address"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <Switch
-        android:id="@+id/device_switch"
+        android:id="@+id/cell_device_switch"
         android:layout_width="48dp"
         android:layout_height="36dp"
         android:layout_gravity="center_vertical"/>

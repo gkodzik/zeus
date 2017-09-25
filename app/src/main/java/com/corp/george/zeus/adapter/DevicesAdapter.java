@@ -6,13 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.corp.george.zeus.R;
 import com.corp.george.zeus.devices.Device;
+import com.corp.george.zeus.interfaces.IOnItemClickListener;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by George on 24.09.2017.
@@ -20,45 +25,58 @@ import java.util.ArrayList;
 
 public class DevicesAdapter<T extends Device> extends RecyclerView.Adapter<DevicesAdapter.ViewHolder> {
 
-    Context mContext;
-    ArrayList<T> mDevices;
+	private final IOnItemClickListener<Device> listener;
+	Context context;
+    ArrayList<T> devices;
 
-    public DevicesAdapter(Context pContext, ArrayList<T> mDevices) {
-        this.mContext = pContext;
-        this.mDevices = mDevices;
+    public DevicesAdapter(Context pContext, ArrayList<T> pDevices, IOnItemClickListener<Device> pListener) {
+        context = pContext;
+        devices = pDevices;
+		listener = pListener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.cell_device, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.cell_device, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(DevicesAdapter.ViewHolder holder, int position) {
-        holder.name.setText(mDevices.get(position).getName());
-        holder.address.setText(mDevices.get(position).getAddress());
-        holder.image.setImageResource(mDevices.get(position).getType().getResourceId());
+    public void onBindViewHolder(final DevicesAdapter.ViewHolder holder, final int position) {
+        holder.name.setText(devices.get(position).getName());
+        holder.address.setText(devices.get(position).getAddress());
+        holder.image.setImageResource(devices.get(position).getType().getResourceId());
+		holder.linear.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				listener.onItemClick(devices.get(position), holder.image, holder.name);
+			}
+		});
     }
 
     @Override
     public int getItemCount() {
-        return mDevices.size();
+        return devices.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+		@BindView(R.id.cell_device_image)
         ImageView image;
+		@BindView(R.id.cell_device_name)
         TextView name;
+		@BindView(R.id.cell_device_address)
         TextView address;
+		@BindView(R.id.cell_device_switch)
         Switch power;
+		@BindView(R.id.cell_device_linear)
+		LinearLayout linear;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            image = ((ImageView) itemView.findViewById(R.id.device_image));
-            name = ((TextView) itemView.findViewById(R.id.device_name));
-            address = ((TextView) itemView.findViewById(R.id.device_address));
-            power = ((Switch) itemView.findViewById(R.id.device_switch));
+			ButterKnife.bind(this, itemView);
         }
     }
 }
